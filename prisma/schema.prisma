@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id            Int           @id @default(autoincrement())
+  username      String        @db.VarChar(20)
+  isAdmin       Boolean       @map("is_admin")
+  email         String        @unique
+  password      String
+  fullName      String        @map("full_name")
+  mobilePhone   String        @map("mobile_phone") @db.VarChar(12)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  userAddress   userAddress[]
+  order         order[]
+  shoppingCart  shoppingCart?
+  userAddressId Int?
+
+  @@map("users")
+}
+
+model userAddress {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  addressLine1 String   @map("address_line1")
+  addressLine2 String   @map("address_line2")
+  city         String
+  postalCode   String   @map("postal_code")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+  thisUser     user     @relation(fields: [userId], references: [id])
+  order        order[]
+
+  @@map("user_address")
+}
+
+model shoppingCart {
+  id               Int                @id @default(autoincrement())
+  userId           Int                @unique @map("user_id")
+  user             user               @relation(fields: [userId], references: [id])
+  shoppingCartItem shoppingCartItem[]
+  order            order[]
+
+  @@map("shopping_cart")
+}
+
+model shoppingCartItem {
+  id            Int          @id @default(autoincrement())
+  cartId        Int          @map("cart_id")
+  productItemId Int          @map("product_item_id")
+  quantity      Int?
+  createdAt     DateTime?    @default(now()) @map("created_at")
+  shoppingCart  shoppingCart @relation(fields: [cartId], references: [id])
+
+  @@map("shopping_cart_item")
+}
+
+model order {
+  id                Int           @id @default(autoincrement())
+  userId            Int           @unique @map("user_id")
+  shippingAddressId Int?          @map("shipping_address_id")
+  userAddress       userAddress?  @relation(fields: [shippingAddressId], references: [id])
+  paymentStatus     PaymentStatus @map("payment_status")
+  status            OrderStatus
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @default(now()) @map("updated_at")
+  user              user          @relation(fields: [userId], references: [id])
+  orderItem         orderItem[]
+  shoppingCart      shoppingCart? @relation(fields: [shoppingCartId], references: [id])
+  shoppingCartId    Int?
+
+  @@map("orders")
+}
+
+enum PaymentStatus {
+  NOT_PAID
+  DEPOSITED
+  PAID
+
+  @@map("payment_status")
+}
+
+enum OrderStatus {
+  DEPOSITED
+  PROCESSING
+  SHIPPED
+  COMPLETED
+  CANCELED
+
+  @@map("order_status")
+}
+
+model orderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int     @map("order_id")
+  productId Int     @map("product_id")
+  order     order   @relation(fields: [orderId], references: [id])
+  product   product @relation(fields: [productId], references: [id])
+
+  @@map("order_item")
+}
+
+enum ProductStatus {
+  AVAILABLE
+  OUT_OF_STOCK
+
+  @@map("product_status")
+}
+
+model product {
+  id              Int             @id @default(autoincrement())
+  name            String?
+  categoryId      Int             @map("category_id")
+  description     String?
+  price           Int?
+  status          ProductStatus
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @default(now()) @map("updated_at")
+  stock           Int?            @map("stock")
+  productCategory productCategory @relation(fields: [categoryId], references: [id])
+  orderItem       orderItem[]
+  image           image[]
+
+  @@map("products")
+}
+
+model productCategory {
+  id        Int       @id @default(autoincrement())
+  name      String?
+  desc      String?
+  attribute String?
+  product   product[]
+
+  @@map("product_category")
+}
+
+model image {
+  id        Int      @id @default(autoincrement()) @map("id")
+  isPrimary Boolean? @map("is_primary")
+  src       String?
+  createdAt DateTime @default(now()) @map("created_at")
+  productId Int      @map("product_id")
+  product   product  @relation(fields: [productId], references: [id])
+
+  @@map("images")
+}
+
+model showCaseImage {
+  id        Int      @id @default(autoincrement()) @map("id")
+  src       String?
+  createdAt DateTime @default(now()) @map("created_at")
+  productId Int      @map("product_id")
+  
+}
