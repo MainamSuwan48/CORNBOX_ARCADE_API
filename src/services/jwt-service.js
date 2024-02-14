@@ -8,6 +8,7 @@ exports.signToken = (payload) => {
 };
 
 exports.verifyToken = (token) => {
+  console.log("+++++++++++++++++++++++++++++",SECRET_KEY);
   return jwt.verify(token, SECRET_KEY);
 };
 

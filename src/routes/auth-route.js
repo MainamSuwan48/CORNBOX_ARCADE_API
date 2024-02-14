@@ -5,11 +5,12 @@ const {
   validateRegister,
   validateLogin,
 } = require("../middlewares/validators/user-validation");
+const authenticate = require("../middlewares/authenticate");
 const router = express.Router();
 // Define your authentication routes here
 router.post("/register", validateRegister, authController.register);
 router.post("/login", validateLogin, authController.login);
-router.get("/me", authController.me);
-router.use("/test", authController.test);
+router.get("/me",authenticate, authController.me);
+
 
 module.exports = router;
