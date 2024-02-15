@@ -20,8 +20,7 @@ const registerSchema = Joi.object({
       "string.empty": "Password is required.",
       "string.pattern.base":
         "Password must contain at least one letter, one number, and one special character.",
-    })
-    ,
+    }),
   confirmPassword: Joi.string()
     .valid(Joi.ref("password"))
     .required()
@@ -39,13 +38,20 @@ const loginSchema = Joi.object({
       "string.empty": "Username or email is required.",
       "string.email": "Email must be a valid email address.",
     }),
-  password: Joi.string()
-    .required()
-    .messages({
-      "string.empty": "Password is required.",
-    })
-    ,
+  password: Joi.string().required().messages({
+    "string.empty": "Password is required.",
+  }),
+});
+
+const updateUserSchema = Joi.object({
+  fullName: Joi.string().required().trim().messages({
+    "string.empty": "Full name is required.",
+  }),
+  mobilePhone: Joi.string().required().trim().messages({
+    "string.empty": "Mobile phone is required.",
+  }),
 });
 
 exports.validateRegister = validate(registerSchema);
 exports.validateLogin = validate(loginSchema);
+exports.validateUpdateUser = validate(updateUserSchema);

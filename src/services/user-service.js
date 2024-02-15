@@ -22,18 +22,33 @@ exports.findUserByEmailOrUsername = async (usernameOrEmail) => {
 };
 
 exports.findUserById = async (id) => {
+  const newId = parseInt(id);
   return await prisma.user.findUnique({
     where: {
-      id,
+      id: newId,
     },
   });
 };
 
 exports.updateUserById = async (id, data) => {
+  const newId = parseInt(id);
   return await prisma.user.update({
     where: {
-      id,
+      id: newId,
     },
     data,
+  });
+};
+
+exports.createAddressByUserId = async (userId, address) => {
+  return await prisma.address.create({
+    data: {
+      ...address,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
   });
 };
