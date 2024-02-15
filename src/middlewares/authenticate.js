@@ -16,6 +16,10 @@ const authenticate = catchError(async (req, res, next) => {
   const token = authorization.split(' ')[1];
   const decodedPayload = jwtService.verifyToken(token);
   console.log(decodedPayload)
+  /// this prevents the need to change the user id to id in the database
+  if(decodedPayload.userId){
+    decodedPayload.id = decodedPayload.userId;
+  }
 
   const user = await userService.findUserById(decodedPayload.id);
   if (!user) {
