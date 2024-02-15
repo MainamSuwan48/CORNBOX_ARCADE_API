@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.patch(
   "/:userId",
-  //   authenticate,
+  authenticate,
   validateUpdateUser,
   userController.updateUserById
 );

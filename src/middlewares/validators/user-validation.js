@@ -44,13 +44,13 @@ const loginSchema = Joi.object({
 });
 
 const updateUserSchema = Joi.object({
-  fullName: Joi.string().required().trim().messages({
-    "string.empty": "Full name is required.",
-  }),
-  mobilePhone: Joi.string().required().trim().messages({
-    "string.empty": "Mobile phone is required.",
-  }),
-});
+  fullName: Joi.string().trim().messages({}),
+  mobilePhone: Joi.string().trim().messages({}),
+})
+  .or("fullName", "mobilePhone")
+  .messages({
+    "object.missing": "At least one of the credentials must be present.",
+  });
 
 exports.validateRegister = validate(registerSchema);
 exports.validateLogin = validate(loginSchema);
