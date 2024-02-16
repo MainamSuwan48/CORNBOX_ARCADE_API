@@ -44,16 +44,41 @@ const loginSchema = Joi.object({
 });
 
 const updateUserSchema = Joi.object({
-  fullName: Joi.string().trim().messages({}),
-  mobilePhone: Joi.string().trim().pattern(/^[0-9]+$/).messages({
-    "string.pattern.base": "Mobile phone must contain only numbers.",
-  }),
+  fullName: Joi.string().trim().allow(null, "").messages({}),
+  mobilePhone: Joi.string()
+    .trim()
+    .pattern(/^[0-9]+$/)
+    .allow(null, "")
+    .messages({
+      "string.pattern.base": "Mobile phone must contain only numbers.",
+    }),
 })
   .or("fullName", "mobilePhone")
   .messages({
     "object.missing": "At least one of the credentials must be present.",
   });
 
+const createAddressSchema = Joi.object({
+  addressLine1: Joi.string().required().trim().messages({
+    "string.empty": "Address line 1 is required.",
+  }),
+  addressLine2: Joi.string().trim().messages({}),
+  city: Joi.string().required().trim().messages({
+    "string.empty": "City is required.",
+  }),
+  postalCode: Joi.string().required().trim().messages({
+    "string.empty": "Postal code is required.",
+  }),
+});
+
+const updateAddressSchema = Joi.object({
+  addressLine1: Joi.string().trim().messages({}),
+  addressLine2: Joi.string().trim().messages({}),
+  city: Joi.string().trim().messages({}),
+  postalCode: Joi.string().trim().messages({}),
+});
+
+exports.validateCreateAddress = validate(createAddressSchema);
 exports.validateRegister = validate(registerSchema);
 exports.validateLogin = validate(loginSchema);
 exports.validateUpdateUser = validate(updateUserSchema);
