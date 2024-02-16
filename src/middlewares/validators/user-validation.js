@@ -45,7 +45,9 @@ const loginSchema = Joi.object({
 
 const updateUserSchema = Joi.object({
   fullName: Joi.string().trim().messages({}),
-  mobilePhone: Joi.string().trim().messages({}),
+  mobilePhone: Joi.string().trim().pattern(/^[0-9]+$/).messages({
+    "string.pattern.base": "Mobile phone must contain only numbers.",
+  }),
 })
   .or("fullName", "mobilePhone")
   .messages({
