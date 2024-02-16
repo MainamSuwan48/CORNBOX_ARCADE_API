@@ -22,51 +22,79 @@ exports.findUserByEmailOrUsername = async (usernameOrEmail) => {
 };
 
 exports.findUserById = async (id) => {
-  const newId = parseInt(id);
+  userId = parseInt(id);
   return await prisma.user.findUnique({
     where: {
-      id: newId,
+      id: userId,
     },
   });
 };
 
 exports.updateUserById = async (id, data) => {
-  const newId = parseInt(id);
+  userId = parseInt(id);
   return await prisma.user.update({
     where: {
-      id: newId,
+      id: userId,
     },
     data,
   });
 };
 
 exports.createAddressByUserId = async (userId, address) => {
-  return await prisma.address.create({
+  userId = parseInt(userId);
+  return await prisma.userAddress.create({
     data: {
-      ...address,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      city: address.city,
+      postalCode: address.postalCode,
+      userId: userId, // use the passed userId here
     },
   });
 };
 
-exports.updateAddressByUserId = async (userId, addressId, data) => {
-  return await prisma.address.update({
+exports.updateAddressById = async (addressId, data) => {
+  id = parseInt(addressId);
+  return await prisma.userAddress.update({
     where: {
-      id: addressId,
-      userId: userId,
+      id: id,
     },
-    data,
+    data: {
+      addressLine1: data.addressLine1,
+      addressLine2: data.addressLine2,
+      city: data.city,
+      postalCode: data.postalCode,
+    },
   });
 };
 
 exports.findAddressByUserId = async (userId) => {
-  return await prisma.address.findMany({
+  userId = parseInt(userId);
+  return await prisma.userAddress.findMany({
     where: {
       userId: userId,
     },
   });
 };
+
+exports.findAddressById = async (addressId) => {
+  addressId = parseInt(addressId);
+  return await prisma.userAddress.findUnique({
+    where: {
+      id: addressId,
+    },
+  });
+};
+
+const findAddressById = async (addressId) => {
+  addressId = parseInt(addressId);
+  return await prisma.userAddress.findUnique({
+    where: {
+      id: addressId,
+    },
+  });
+};
+
+findAddressById(5).then((address) => {
+  console.log(address);
+});

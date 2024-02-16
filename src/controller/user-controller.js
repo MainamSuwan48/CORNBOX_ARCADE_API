@@ -12,13 +12,13 @@ exports.updateUserById = catchError(async (req, res) => {
   res.status(200).json(updatedUser);
 });
 
-exports.getAddressesByUserId = catchError(async (req, res) => {
+exports.getAddressByUserId = catchError(async (req, res) => {
   const userId = req.params.userId;
   const user = await userService.findUserById(userId);
   if (!user) {
     createError("User not found", 404);
   }
-  const addresses = await userService.findAddressesByUserId(userId);
+  const addresses = await userService.findAddressByUserId(userId);
   res.status(200).json(addresses);
 });
 
@@ -34,7 +34,7 @@ exports.createAddressByUserId = catchError(async (req, res) => {
 
 exports.updateAddressByUserId = catchError(async (req, res) => {
   const userId = req.params.userId;
-  const addressId = req.body.addressId;
+  const addressId = parseInt(req.body.id)
   const user = await userService.findUserById(userId);
   if (!user) {
     createError("User not found", 404);
@@ -43,8 +43,8 @@ exports.updateAddressByUserId = catchError(async (req, res) => {
   if (!address) {
     createError("Address not found", 404);
   }
-  const updatedAddress = await userService.updateAddressByUserId(
-    userId,
+
+  const updatedAddress = await userService.updateAddressById(
     addressId,
     req.body
   );

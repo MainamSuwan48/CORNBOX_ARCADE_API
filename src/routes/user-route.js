@@ -14,5 +14,21 @@ router.patch(
   validateUpdateUser,
   userController.updateUserById
 );
+router.get(
+  "/:userId/address",
+  // authenticate,
+  userController.getAddressByUserId
+);
+
+router.post(
+  "/:userId/address",
+  // authenticate,
+  userController.createAddressByUserId
+);
+router.patch(
+  "/:userId/address",
+  // authenticate,
+  userController.updateAddressByUserId
+);
 
 module.exports = router;
