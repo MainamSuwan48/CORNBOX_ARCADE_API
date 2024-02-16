@@ -86,15 +86,12 @@ exports.findAddressById = async (addressId) => {
   });
 };
 
-const findAddressById = async (addressId) => {
+exports.deleteAddressById = async (addressId) => {
   addressId = parseInt(addressId);
-  return await prisma.userAddress.findUnique({
+  console.log(addressId, "***********")
+  return await prisma.userAddress.delete({
     where: {
       id: addressId,
     },
   });
 };
-
-findAddressById(5).then((address) => {
-  console.log(address);
-});

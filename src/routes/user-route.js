@@ -31,4 +31,10 @@ router.patch(
   userController.updateAddressByUserId
 );
 
+router.delete(
+  "/:userId/address",
+  // authenticate,
+  userController.deleteAddressById
+);
+
 module.exports = router;

@@ -34,7 +34,8 @@ exports.createAddressByUserId = catchError(async (req, res) => {
 
 exports.updateAddressByUserId = catchError(async (req, res) => {
   const userId = req.params.userId;
-  const addressId = parseInt(req.body.id)
+  const addressId = parseInt(req.body.id);
+  console.log(req.body, "***********");
   const user = await userService.findUserById(userId);
   if (!user) {
     createError("User not found", 404);
@@ -49,4 +50,16 @@ exports.updateAddressByUserId = catchError(async (req, res) => {
     req.body
   );
   res.status(200).json(updatedAddress);
+});
+
+exports.deleteAddressById = catchError(async (req, res) => {
+  const addressId = parseInt(req.body.id);
+  const address = await userService.findAddressById(addressId);
+  if (!address) {
+    createError("Address not found", 404);
+  }
+  await userService.deleteAddressById(addressId);
+  res
+    .status(204)
+    .json();
 });
