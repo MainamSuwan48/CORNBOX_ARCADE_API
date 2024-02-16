@@ -88,7 +88,7 @@ exports.findAddressById = async (addressId) => {
 
 exports.deleteAddressById = async (addressId) => {
   addressId = parseInt(addressId);
-  console.log(addressId, "***********")
+  console.log(addressId, "***********");
   return await prisma.userAddress.delete({
     where: {
       id: addressId,

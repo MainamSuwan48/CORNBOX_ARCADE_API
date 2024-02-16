@@ -54,12 +54,12 @@ exports.updateAddressByUserId = catchError(async (req, res) => {
 
 exports.deleteAddressById = catchError(async (req, res) => {
   const addressId = parseInt(req.body.id);
+  console.log(req.body, "***********");
+
   const address = await userService.findAddressById(addressId);
   if (!address) {
     createError("Address not found", 404);
   }
   await userService.deleteAddressById(addressId);
-  res
-    .status(204)
-    .json();
+  res.status(204).json();
 });
