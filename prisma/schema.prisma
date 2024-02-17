@@ -55,6 +55,7 @@ model shoppingCartItem {
   id            Int          @id @default(autoincrement())
   cartId        Int          @map("cart_id")
   productItemId Int          @map("product_item_id")
+  attribute String? @db.Text 
   quantity      Int?
   createdAt     DateTime?    @default(now()) @map("created_at")
   shoppingCart  shoppingCart @relation(fields: [cartId], references: [id])
@@ -101,6 +102,7 @@ model orderItem {
   id        Int     @id @default(autoincrement())
   orderId   Int     @map("order_id")
   productId Int     @map("product_id")
+  attribute String? @db.Text  
   order     order   @relation(fields: [orderId], references: [id])
   product   product @relation(fields: [productId], references: [id])
 
@@ -124,7 +126,7 @@ model product {
   mainImage       String?         @map("main_image")
   createdAt       DateTime        @default(now()) @map("created_at")
   updatedAt       DateTime        @default(now()) @map("updated_at")
-  stock           Int?            @map("stock")
+  stock           Int?            @map("stock")  
   productCategory productCategory @relation(fields: [categoryId], references: [id])
   orderItem       orderItem[]
   image           image[]
@@ -135,8 +137,7 @@ model product {
 model productCategory {
   id        Int       @id @default(autoincrement())
   name      String?
-  desc      String?
-  attribute String?
+  desc      String?  
   product   product[]
 
   @@map("product_category")
