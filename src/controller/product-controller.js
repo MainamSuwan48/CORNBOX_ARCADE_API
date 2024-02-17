@@ -27,6 +27,7 @@ exports.createCartForUser = catchError(async (req, res) => {
     const cart = await productService.createCartForUser(userId);
     res.status(201).json(cart);
   } catch (error) {
+    console.log(error);
     throw new Error("Error creating cart");
   }
 });
