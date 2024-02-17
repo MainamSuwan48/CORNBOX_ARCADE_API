@@ -95,3 +95,34 @@ exports.deleteAddressById = async (addressId) => {
     },
   });
 };
+
+const createOrUpdateCart = async (userId, productItemId, quantity) => {
+  let userWithCart = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { shoppingCart: true },
+  });
+
+  if (!userWithCart.shoppingCart) {
+    // Create a new cart if the user doesn't have one
+    const newCart = await prisma.shoppingCart.create({
+      data: {
+        user: { connect: { id: userId } },
+        shoppingCartItem: {
+          create: { productItemId, quantity },
+        },
+      },
+      include: { shoppingCartItem: true },
+    });
+    return newCart;
+  } else {
+    // Update the existing cart if the user already has one
+    const updatedCartItem = await prisma.shoppingCartItem.create({
+      data: {
+        cartId: userWithCart.shoppingCart.id,
+        productItemId,
+        quantity,
+      },
+    });
+    return updatedCartItem;
+  }
+};

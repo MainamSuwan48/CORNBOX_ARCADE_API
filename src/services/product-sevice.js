@@ -43,6 +43,8 @@ exports.getProductById = async (id) => {
   });
 };
 
+
+
 //test
 // const getAllProducts = async () => {
 //   return await prisma.product.findMany();
