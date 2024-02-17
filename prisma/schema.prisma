@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 
 generator client {
   provider = "prisma-client-js"
@@ -119,9 +118,10 @@ model product {
   id              Int             @id @default(autoincrement())
   name            String?
   categoryId      Int             @map("category_id")
-  description     String?
+  description     String?         @db.Text
   price           Int?
   status          ProductStatus
+  mainImage       String?         @map("main_image")
   createdAt       DateTime        @default(now()) @map("created_at")
   updatedAt       DateTime        @default(now()) @map("updated_at")
   stock           Int?            @map("stock")
