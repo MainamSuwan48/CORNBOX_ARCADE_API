@@ -139,7 +139,7 @@ exports.updateCartItem = async ( cartItemId, newQuantity) => {
   return updatedItem;
 };
 
-const deleteCartItem = async (cartItemId) => {
+exports.deleteCartItem = async (cartItemId) => {
   const item = await prisma.shoppingCartItem.findUnique({
     where: {
       id: cartItemId,
