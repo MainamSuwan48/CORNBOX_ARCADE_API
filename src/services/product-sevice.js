@@ -33,11 +33,11 @@ const product = {
 //   };
 
 //   createProduct(product[1]).then((product) => {
-//     console.log(product);   
+//     console.log(product);
 //     });
 
 //     createProduct(product[2]).then((product) => {
-//         console.log(product);   
+//         console.log(product);
 //         });
 
 exports.createProduct = async (product) => {
@@ -70,26 +70,26 @@ exports.userHasCart = async (userId) => {
 };
 
 exports.createCartForUser = async (userId) => {
-    const newCart = await prisma.shoppingCart.create({
-        data: {
-            userId: userId,
-        },
-    });
+  const newCart = await prisma.shoppingCart.create({
+    data: {
+      userId: userId,
+    },
+  });
 
-    return newCart;
+  return newCart;
 };
 
 exports.addItemToCart = async (cartId, productItemId, quantity, attribute) => {
-    const newItem = await prisma.shoppingCartItem.create({
-        data: {
-            cartId: cartId,
-            productItemId: productItemId,
-            quantity: quantity,
-            attribute: attribute,
-        },
-    });
+  const newItem = await prisma.shoppingCartItem.create({
+    data: {
+      cartId: cartId,
+      productItemId: productItemId,
+      quantity: quantity,
+      attribute: attribute,
+    },
+  });
 
-    return newItem;
+  return newItem;
 };
 
 exports.getCartItems = async (userId) => {
@@ -103,7 +103,7 @@ exports.getCartItems = async (userId) => {
 
 const findCartItem = async (cartItemId) => {
   const item = await prisma.shoppingCartItem.findFirst({
-    where: {      
+    where: {
       id: cartItemId,
     },
   });
@@ -169,13 +169,11 @@ const deleteCartItem = async (cartItemId) => {
 //   return await prisma.product.findMany();
 // };
 
-
-
 // getAllProducts().then((products) => {
 //   console.log(products);
 // });
 
-// OH you've found me, 
+// OH you've found me,
 // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀
 // ⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀

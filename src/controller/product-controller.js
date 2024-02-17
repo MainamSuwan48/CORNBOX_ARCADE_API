@@ -19,28 +19,29 @@ exports.getProductById = catchError(async (req, res) => {
   res.status(200).json(product);
 });
 
-exports.addToCartOrCreateCart = catchError(async (req, res) => {
-    const { userId, productItemId, quantity, attribute } = req.body;
-  let cart = await userHasCart(userId);
+//shopping cart
 
-  if (!cart) {
-    // Create a new cart for the user
-    cart = await prisma.shoppingCart.create({
-      data: {
-        userId: userId,
-      },
-    });
+exports.creteCartForUser = catchError(async (req, res) => {
+  const hasCart = await productService.userHasCart(userId);
+  if (hasCart) {
+    const { userId } = req.body;
+    const cart = await productService.createCartForUser(userId);
+    res.status(201).json(cart);
+  } else {
+    createError("User already has a cart", 400);
   }
+});
 
-  // Add the item to the user's cart
-  const newItem = await addItemToCart(
-    cart.id,
+exports.addItemToCart = catchError(async (req, res) => {
+  const { cartId, productItemId, quantity, attribute } = req.body;
+  const newItem = await productService.addItemToCart(
+    cartId,
     productItemId,
     quantity,
     attribute
   );
 
-  return newItem;
+  res.status(201).json(newItem);
 });
 
 exports.getCartItems = catchError(async (req, res) => {
@@ -56,8 +57,12 @@ exports.findCartItem = catchError(async (req, res) => {
 });
 
 exports.updateCartItem = catchError(async (req, res) => {
-  const { cartId, cartItemId, newQuantity} = req.body;
-  const updatedItem = await productService.updateCartItem(cartId, cartItemId, newQuantity);
+  const { cartId, cartItemId, newQuantity } = req.body;
+  const updatedItem = await productService.updateCartItem(
+    cartId,
+    cartItemId,
+    newQuantity
+  );
   res.status(200).json(updatedItem);
 });
 
