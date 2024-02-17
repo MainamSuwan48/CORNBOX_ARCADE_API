@@ -1,5 +1,6 @@
 const prisma = require("../models/prisma");
 
+//in case of schema change
 const product = {
   1: {
     id: 1,
@@ -43,7 +44,66 @@ exports.getProductById = async (id) => {
   });
 };
 
+const userHasCart = async (userId) => {
+  const cart = await prisma.shoppingCart.findUnique({
+    where: {
+      userId: userId,
+    },
+  });
 
+  return cart !== null;
+};
+
+async function createCartForUser(userId) {
+  const newCart = await prisma.shoppingCart.create({
+    data: {
+      userId: userId,
+    },
+  });
+
+  return newCart;
+}
+
+async function addItemToCart(cartId, productItemId, quantity) {
+  const newItem = await prisma.shoppingCartItem.create({
+    data: {
+      cartId: cartId,
+      productItemId: productItemId,
+      quantity: quantity,
+    },
+  });
+
+  return newItem;
+}
+
+const getCartItems = async (userId) => {
+  const cartItems = await prisma.shoppingCart.findUnique({
+    where: { userId: userId },
+    include: { shoppingCartItem: true },
+  });
+
+  return cartItems;
+};
+
+const updateCartItem = async (userId, itemId, newQuantity) => {
+  const userCart = await prisma.shoppingCart.findUnique({ where: { userId } });
+
+  if (!userCart) {
+    throw new Error("Cart not found");
+  }
+
+  const updatedItem = await prisma.shoppingCartItem.update({
+    where: {
+      cartId_productItemId: { cartId: userCart.id, productItemId: itemId },
+    },
+    data: { quantity: newQuantity },
+  });
+
+  return updatedItem;
+};
+// getCartItems(1).then((cartItems) => {
+//   console.log(cartItems);
+// });
 
 //test
 // const getAllProducts = async () => {
