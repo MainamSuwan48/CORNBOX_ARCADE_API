@@ -35,6 +35,14 @@ exports.getAllProducts = async () => {
   return await prisma.product.findMany();
 };
 
+exports.getProductById = async (id) => {
+  return await prisma.product.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+};
+
 //test
 // const getAllProducts = async () => {
 //   return await prisma.product.findMany();
