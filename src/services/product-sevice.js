@@ -116,26 +116,22 @@ const updateCartItem = async (cartId, cartItemId, newQuantity) => {
   return updatedItem;
 };
 
-const deleteCartItem = async (cartId, productItemId) => {
-  try {
-    const item = await findCartItem(cartId, productItemId);
-    console.log(item);
+const deleteCartItem = async (cartItemId) => {
+  const item = await prisma.shoppingCartItem.findUnique({
+    where: {
+      id: cartItemId,
+    },
+  });
 
-    if (!item) {
-      throw new Error("Item not found in cart");
-    }
-    console.log("deleting");
-
-    deletedItem = await prisma.shoppingCartItem.delete({
-      where: {
-        id: item.id,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    return item;
+  if (!item) {
+    throw new Error("Item not found");
   }
+
+  return await prisma.shoppingCartItem.delete({
+    where: {
+      id: cartItemId,
+    },
+  });
 };
 
 //test
@@ -147,13 +143,12 @@ const deleteCartItem = async (cartId, productItemId) => {
 // findCartItem(1, 8).then((item) => {
 //   console.log(item);
 // });
-// deleteCartItem(1, 4).then((item) => {
+deleteCartItem(15);
+
+// addItemToCart(1, 1, 2, "RED").then((item) => {
 //   console.log(item);
 // });
 
-addItemToCart(1, 1, 2, "red").then((item) => {
-  console.log(item);
-});
 // getCartItems(1).then((cartItems) => {
 //   console.log(cartItems);
 // });
