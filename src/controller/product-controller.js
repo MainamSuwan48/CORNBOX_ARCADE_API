@@ -1,6 +1,6 @@
-const catchError = require("../utilities/catch-error");
 const createError = require("../utilities/create-error");
 const productService = require("../services/product-sevice");
+const catchError = require("../utilities/catch-error");
 
 exports.getAllProducts = catchError(async (req, res) => {
   const products = await productService.getAllProducts();
@@ -21,14 +21,13 @@ exports.getProductById = catchError(async (req, res) => {
 
 //shopping cart
 
-exports.creteCartForUser = catchError(async (req, res) => {
-  const hasCart = await productService.userHasCart(userId);
-  if (hasCart) {
+exports.createCartForUser = catchError(async (req, res) => {
+  try {
     const { userId } = req.body;
     const cart = await productService.createCartForUser(userId);
     res.status(201).json(cart);
-  } else {
-    createError("User already has a cart", 400);
+  } catch (error) {
+    throw new Error("Error creating cart");
   }
 });
 
@@ -57,11 +56,8 @@ exports.findCartItem = catchError(async (req, res) => {
 });
 
 exports.updateCartItem = catchError(async (req, res) => {
-  const {  cartItemId, quantity } = req.body;
-  const updatedItem = await productService.updateCartItem(    
-    cartItemId,
-    quantity
-  );
+  const { cartItemId, quantity } = req.body;
+  const updatedItem = await productService.updateCartItem(cartItemId, quantity);
   res.status(200).json(updatedItem);
 });
 
