@@ -87,23 +87,22 @@ const getCartItems = async (userId) => {
   return cartItems;
 };
 
-const findCartItem = async (cartId, productItemId) => {
-    const item = await prisma.shoppingCartItem.findFirst({
-        where: {
-        cartId: cartId,
-        id: productItemId,
-        },
-    });
-    
-    return item;
-    };
+const findCartItem = async (cartId, cartItemId) => {
+  const item = await prisma.shoppingCartItem.findFirst({
+    where: {
+      cartId: cartId,
+      id: cartItemId,
+    },
+  });
 
-const updateCartItem = async (cartId, productItemId, newQuantity) => {
-    const item = await findCartItem(cartId, productItemId);
-    if (!item) {
-      throw new Error("Item not found in cart");
-    }
+  return item;
+};
 
+const updateCartItem = async (cartId, cartItemId, newQuantity) => {
+  const item = await findCartItem(cartId, cartItemId);
+  if (!item) {
+    throw new Error("Item not found in cart");
+  }
 
   const updatedItem = await prisma.shoppingCartItem.update({
     where: {
@@ -117,14 +116,44 @@ const updateCartItem = async (cartId, productItemId, newQuantity) => {
   return updatedItem;
 };
 
+const deleteCartItem = async (cartId, productItemId) => {
+  try {
+    const item = await findCartItem(cartId, productItemId);
+    console.log(item);
+
+    if (!item) {
+      throw new Error("Item not found in cart");
+    }
+    console.log("deleting");
+
+    deletedItem = await prisma.shoppingCartItem.delete({
+      where: {
+        id: item.id,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    return item;
+  }
+};
+
 //test
-// findCartItem(1, 1).then((item) => {
+
+// updateCartItem(1, 8, 11).then((item) => {
 //   console.log(item);
-// }); 
-updateCartItem(1, 8, 99).then((item) => {
+// });
+
+// findCartItem(1, 8).then((item) => {
+//   console.log(item);
+// });
+// deleteCartItem(1, 4).then((item) => {
+//   console.log(item);
+// });
+
+addItemToCart(1, 1, 2, "red").then((item) => {
   console.log(item);
 });
-
 // getCartItems(1).then((cartItems) => {
 //   console.log(cartItems);
 // });
