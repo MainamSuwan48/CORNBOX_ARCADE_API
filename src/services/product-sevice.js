@@ -26,6 +26,20 @@ const product = {
   },
 };
 
+// const createProduct = async (product) => {
+//     return await prisma.product.create({
+//       data: product,
+//     });
+//   };
+
+//   createProduct(product[1]).then((product) => {
+//     console.log(product);   
+//     });
+
+//     createProduct(product[2]).then((product) => {
+//         console.log(product);   
+//         });
+
 exports.createProduct = async (product) => {
   return await prisma.product.create({
     data: product,
@@ -45,7 +59,7 @@ exports.getProductById = async (id) => {
 };
 
 //shopping cart
-const userHasCart = async (userId) => {
+exports.userHasCart = async (userId) => {
   const cart = await prisma.shoppingCart.findUnique({
     where: {
       userId: userId,
@@ -55,30 +69,30 @@ const userHasCart = async (userId) => {
   return cart !== null;
 };
 
-async function createCartForUser(userId) {
-  const newCart = await prisma.shoppingCart.create({
-    data: {
-      userId: userId,
-    },
-  });
+exports.createCartForUser = async (userId) => {
+    const newCart = await prisma.shoppingCart.create({
+        data: {
+            userId: userId,
+        },
+    });
 
-  return newCart;
-}
+    return newCart;
+};
 
-async function addItemToCart(cartId, productItemId, quantity, attribute) {
-  const newItem = await prisma.shoppingCartItem.create({
-    data: {
-      cartId: cartId,
-      productItemId: productItemId,
-      quantity: quantity,
-      attribute: attribute,
-    },
-  });
+exports.addItemToCart = async (cartId, productItemId, quantity, attribute) => {
+    const newItem = await prisma.shoppingCartItem.create({
+        data: {
+            cartId: cartId,
+            productItemId: productItemId,
+            quantity: quantity,
+            attribute: attribute,
+        },
+    });
 
-  return newItem;
-}
+    return newItem;
+};
 
-const getCartItems = async (userId) => {
+exports.getCartItems = async (userId) => {
   const cartItems = await prisma.shoppingCart.findUnique({
     where: { userId: userId },
     include: { shoppingCartItem: true },
@@ -155,11 +169,7 @@ const deleteCartItem = async (cartItemId) => {
 //   return await prisma.product.findMany();
 // };
 
-// const createProduct = async (product) => {
-//     return await prisma.product.create({
-//       data: product,
-//     });
-//   };
+
 
 // getAllProducts().then((products) => {
 //   console.log(products);
