@@ -94,7 +94,7 @@ exports.addItemToCart = async (cartId, productItemId, quantity, attribute) => {
 
 exports.getCartItems = async (userId) => {
   const cartItems = await prisma.shoppingCart.findUnique({
-    where: { userId: userId },
+    where: { userId: parseInt(userId) },
     include: { shoppingCartItem: true },
   });
 
@@ -112,16 +112,16 @@ exports.findCartItem = async (cartItemId) => {
 };
 
 const findCartItem = async (cartItemId) => {
-    const item = await prisma.shoppingCartItem.findFirst({
-      where: {
-        id: cartItemId,
-      },
-    });
-  
-    return item;
-  };
+  const item = await prisma.shoppingCartItem.findFirst({
+    where: {
+      id: cartItemId,
+    },
+  });
 
-exports.updateCartItem = async ( cartItemId, newQuantity) => {
+  return item;
+};
+
+exports.updateCartItem = async (cartItemId, newQuantity) => {
   const item = await findCartItem(cartItemId);
   if (!item) {
     throw new Error("Item not found in cart");

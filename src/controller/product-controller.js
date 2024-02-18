@@ -12,6 +12,7 @@ exports.getAllProducts = catchError(async (req, res) => {
 
 exports.getProductById = catchError(async (req, res) => {
   const { id } = req.params;
+  console.log(req.params)
   const product = await productService.getProductById(id);
   if (!product) {
     createError("Product not found", 404);
@@ -45,7 +46,8 @@ exports.addItemToCart = catchError(async (req, res) => {
 });
 
 exports.getCartItems = catchError(async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = (req.params);
+  console.log(req.params,"***********")
   const cartItems = await productService.getCartItems(userId);
   res.status(200).json(cartItems);
 });
