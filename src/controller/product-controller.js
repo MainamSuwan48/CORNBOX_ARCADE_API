@@ -1,6 +1,7 @@
 const createError = require("../utilities/create-error");
 const productService = require("../services/product-sevice");
 const catchError = require("../utilities/catch-error");
+const { parse } = require("dotenv");
 
 exports.getAllProducts = catchError(async (req, res) => {
   const products = await productService.getAllProducts();
@@ -12,7 +13,7 @@ exports.getAllProducts = catchError(async (req, res) => {
 
 exports.getProductById = catchError(async (req, res) => {
   const { id } = req.params;
-  console.log(req.params)
+  console.log(req.params);
   const product = await productService.getProductById(id);
   if (!product) {
     createError("Product not found", 404);
@@ -46,8 +47,8 @@ exports.addItemToCart = catchError(async (req, res) => {
 });
 
 exports.getCartItems = catchError(async (req, res) => {
-  const { userId } = (req.params);
-  console.log(req.params,"***********")
+  const { userId } = req.params;
+  console.log(req.params, "***********");
   const cartItems = await productService.getCartItems(userId);
   res.status(200).json(cartItems);
 });
@@ -59,13 +60,15 @@ exports.findCartItem = catchError(async (req, res) => {
 });
 
 exports.updateCartItem = catchError(async (req, res) => {
-  const { cartItemId, quantity } = req.body;
+  const { cartItemId } = parseInt(req.params);
+  const { quantity } = req.body;
   const updatedItem = await productService.updateCartItem(cartItemId, quantity);
   res.status(200).json(updatedItem);
 });
 
 exports.deleteCartItem = catchError(async (req, res) => {
-  const { cartItemId } = req.body;
+  console.log(req.params);
+  const  cartItemId  = parseInt(req.params.cartItemId);
   const deletedItem = await productService.deleteCartItem(cartItemId);
   res.status(200).json(deletedItem);
 });
