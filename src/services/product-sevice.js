@@ -152,6 +152,15 @@ exports.deleteCartItem = async (cartItemId) => {
   });
 };
 
+exports.deleteCart = async (cartId) => {
+  return await prisma.shoppingCartItem.deleteMany({
+    where: {
+      cartId: parseInt(cartId),
+    },
+  });
+}
+
+
 //test
 
 // updateCartItem(1, 8, 11).then((item) => {

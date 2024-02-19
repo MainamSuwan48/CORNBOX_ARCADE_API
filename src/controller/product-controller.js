@@ -60,8 +60,8 @@ exports.findCartItem = catchError(async (req, res) => {
 });
 
 exports.updateCartItem = catchError(async (req, res) => {
-  const { cartItemId } = (req.params);
-  console.log(cartItemId, "***********")
+  const { cartItemId } = req.params;
+  console.log(cartItemId, "***********");
   const { quantity } = req.body;
   const updatedItem = await productService.updateCartItem(cartItemId, quantity);
   res.status(200).json(updatedItem);
@@ -69,7 +69,13 @@ exports.updateCartItem = catchError(async (req, res) => {
 
 exports.deleteCartItem = catchError(async (req, res) => {
   console.log(req.params);
-  const  cartItemId  = parseInt(req.params.cartItemId);
+  const cartItemId = parseInt(req.params.cartItemId);
   const deletedItem = await productService.deleteCartItem(cartItemId);
   res.status(200).json(deletedItem);
+});
+
+exports.deleteCart = catchError(async (req, res) => {
+  const { cartId } = req.params;
+  const deletedCart = await productService.deleteCart(cartId);
+  res.status(200).json(deletedCart);
 });
