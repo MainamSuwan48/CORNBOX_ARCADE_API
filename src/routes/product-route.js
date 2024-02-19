@@ -12,6 +12,7 @@ router.delete("/cart/item/:cartItemId", productController.deleteCartItem);
 router.delete("/cart/:cartId", productController.deleteCart);
 router.get("/", productController.getAllProducts);
 router.get("/:id", productController.getProductById);
+router.put("/:productId", productController.updateStock);
 
 
 module.exports = router;

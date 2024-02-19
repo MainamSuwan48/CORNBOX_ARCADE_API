@@ -58,6 +58,17 @@ exports.getProductById = async (id) => {
   });
 };
 
+exports.updateStock = async (productId, newStock) => {
+  return await prisma.product.update({
+    where: {
+      id: parseInt(productId),
+    },
+    data: {
+      stock: parseInt(newStock),
+    },
+  });
+}
+
 //shopping cart
 exports.userHasCart = async (userId) => {
   const cart = await prisma.shoppingCart.findUnique({

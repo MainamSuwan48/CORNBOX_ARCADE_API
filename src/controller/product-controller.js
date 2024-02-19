@@ -20,6 +20,12 @@ exports.getProductById = catchError(async (req, res) => {
   }
   res.status(200).json(product);
 });
+exports.updateStock = catchError(async (req, res) => {
+  const { productId } = req.params;
+  const { newStock } = req.body;
+  const updatedStock = await productService.updateStock(productId, newStock);
+  res.status(200).json(updatedStock);
+});
 
 //shopping cart
 
