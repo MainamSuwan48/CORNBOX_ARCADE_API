@@ -122,14 +122,9 @@ const findCartItem = async (cartItemId) => {
 };
 
 exports.updateCartItem = async (cartItemId, newQuantity) => {
-  const item = await findCartItem(cartItemId);
-  if (!item) {
-    throw new Error("Item not found in cart");
-  }
-
   const updatedItem = await prisma.shoppingCartItem.update({
     where: {
-      id: item.id,
+      id: parseInt(cartItemId)
     },
     data: {
       quantity: newQuantity,

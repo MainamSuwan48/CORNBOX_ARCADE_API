@@ -60,7 +60,8 @@ exports.findCartItem = catchError(async (req, res) => {
 });
 
 exports.updateCartItem = catchError(async (req, res) => {
-  const { cartItemId } = parseInt(req.params);
+  const { cartItemId } = (req.params);
+  console.log(cartItemId, "***********")
   const { quantity } = req.body;
   const updatedItem = await productService.updateCartItem(cartItemId, quantity);
   res.status(200).json(updatedItem);
