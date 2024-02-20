@@ -32,6 +32,19 @@ const createProduct = async (product) => {
     });
   };
 
+const createProductCategory = async (category) => {
+    return await prisma.productCategory.create({
+        data: category
+    })}; 
+
+  const newCategory = {
+    name: 'Flatbox Controllers',
+    desc: 'Hitbox Controllers for the Flatbox series of controllers.'
+};
+
+// createProductCategory(newCategory)
+
+
 // createProduct(product[1]).then((product) => {
 //     console.log(product);
 //     });
@@ -46,6 +59,8 @@ exports.createProduct = async (product) => {
     data: product,
   });
 };
+
+
 
 exports.getAllProducts = async () => {
   return await prisma.product.findMany();
