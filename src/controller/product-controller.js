@@ -1,7 +1,7 @@
 const createError = require("../utilities/create-error");
 const productService = require("../services/product-sevice");
 const catchError = require("../utilities/catch-error");
-const { parse } = require("dotenv");
+
 
 exports.getAllProducts = catchError(async (req, res) => {
   const products = await productService.getAllProducts();
@@ -68,8 +68,8 @@ exports.findCartItem = catchError(async (req, res) => {
 exports.updateCartItem = catchError(async (req, res) => {
   const { cartItemId } = req.params;
   console.log(cartItemId, "***********");
-  const { quantity } = req.body;
-  const updatedItem = await productService.updateCartItem(cartItemId, quantity);
+  const { quantity,attribute } = req.body;
+  const updatedItem = await productService.updateCartItem(cartItemId, quantity,attribute);
   res.status(200).json(updatedItem);
 });
 

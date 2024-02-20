@@ -16,24 +16,24 @@ router.patch(
 );
 router.get(
   "/:userId/address",
-  // authenticate,
+  authenticate,
   userController.getAddressByUserId
 );
 
 router.post(
   "/:userId/address",
-  // authenticate,
+  authenticate,
   userController.createAddressByUserId
 );
 router.patch(
   "/:userId/address",
-  // authenticate,
+  authenticate,
   userController.updateAddressByUserId
 );
 
 router.delete(
   "/:userId/address",
-  // authenticate,
+  authenticate,
   userController.deleteAddressById
 );
 

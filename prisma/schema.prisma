@@ -65,7 +65,7 @@ model shoppingCartItem {
 
 model order {
   id                Int           @id @default(autoincrement())
-  userId            Int           @unique @map("user_id")
+  userId            Int           @map("user_id")
   shippingAddressId Int?          @map("shipping_address_id")
   userAddress       userAddress?  @relation(fields: [shippingAddressId], references: [id])
   paymentStatus     PaymentStatus @map("payment_status")

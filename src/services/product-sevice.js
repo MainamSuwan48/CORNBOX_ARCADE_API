@@ -11,7 +11,7 @@ const product = {
     description:
       "Flatbox Controller is a pay to win controller , you buy this and you ascended in to GOD HOOD become Daigo, become king! BECOME GOD! and Probably win EVO idk it’s pretty hard since there are greater gods there, but not impossible if you believed. Flatbox XXL is bigger than Flatbox XL, so it’s better. Nope just kidding it's just bigger",
     status: "AVAILABLE",
-    stock: 100,
+    stock: 10,
   },
   2: {
     id: 2,
@@ -22,23 +22,24 @@ const product = {
     description:
       "Flatbox Controller is a pay to win controller , you buy this and you ascended in to GOD HOOD become Daigo, become king! BECOME GOD! and Probably win EVO idk it’s pretty hard since there are greater gods there, but not impossible if you believed. Flatbox XL is smaller than Flatbox XXL, so it’s more popular for some reason. Nope just kidding it's just smaller",
     status: "AVAILABLE",
-    stock: 100,
+    stock: 10,
   },
 };
 
-// const createProduct = async (product) => {
-//     return await prisma.product.create({
-//       data: product,
-//     });
-//   };
+const createProduct = async (product) => {
+    return await prisma.product.create({
+      data: product,
+    });
+  };
 
-//   createProduct(product[1]).then((product) => {
+// createProduct(product[1]).then((product) => {
 //     console.log(product);
 //     });
-
-//     createProduct(product[2]).then((product) => {
-//         console.log(product);
-//         });
+// createProduct(product[2]).then((product) => {
+//       console.log(product);
+//     });
+// DON"T FORGET TO CREATE CATEGORY FIRST
+//DON"T FORGET TO COMMENT OUT THE ABOVE CODE AFTER RUNNING IT ONCE AND CHECKING THE DATABASE
 
 exports.createProduct = async (product) => {
   return await prisma.product.create({
@@ -132,13 +133,14 @@ const findCartItem = async (cartItemId) => {
   return item;
 };
 
-exports.updateCartItem = async (cartItemId, newQuantity) => {
+exports.updateCartItem = async (cartItemId, newQuantity, newAttribute) => {
   const updatedItem = await prisma.shoppingCartItem.update({
     where: {
       id: parseInt(cartItemId)
     },
     data: {
-      quantity: newQuantity,
+      quantity: newQuantity !== undefined ? newQuantity : undefined,
+      attribute: newAttribute !== undefined ? newAttribute : undefined,
     },
   });
 
