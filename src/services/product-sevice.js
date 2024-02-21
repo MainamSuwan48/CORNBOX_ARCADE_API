@@ -11,7 +11,7 @@ const product = {
     description:
       "Flatbox Controller is a pay to win controller , you buy this and you ascended in to GOD HOOD become Daigo, become king! BECOME GOD! and Probably win EVO idk it’s pretty hard since there are greater gods there, but not impossible if you believed. Flatbox XXL is bigger than Flatbox XL, so it’s better. Nope just kidding it's just bigger",
     status: "AVAILABLE",
-    stock: 10,
+    stock: 1000,
   },
   2: {
     id: 2,
@@ -22,7 +22,7 @@ const product = {
     description:
       "Flatbox Controller is a pay to win controller , you buy this and you ascended in to GOD HOOD become Daigo, become king! BECOME GOD! and Probably win EVO idk it’s pretty hard since there are greater gods there, but not impossible if you believed. Flatbox XL is smaller than Flatbox XXL, so it’s more popular for some reason. Nope just kidding it's just smaller",
     status: "AVAILABLE",
-    stock: 10,
+    stock: 1000,
   },
 };
 

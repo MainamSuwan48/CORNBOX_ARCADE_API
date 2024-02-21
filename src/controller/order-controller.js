@@ -10,3 +10,17 @@ exports.createOrder = catchError(async (req, res) => {
   const order = await orderService.createOrder(userId, shippingAddressId);
   res.status(201).json(order);
 });
+
+exports.createOrderItems = catchError(async (req, res) => {
+  console.log(req.params, "*********** req.params from order-controller")
+  const { orderId } = req.params;
+  const { cartId } = req.body;
+  const orderItems = await orderService.createOrderItems(orderId, cartId);
+  res.status(201).json(orderItems);
+}); 
+
+exports.getOrders = catchError(async (req, res) => {
+  const { userId } = req.params;
+  const orders = await orderService.getOrders(userId);
+  res.status(200).json(orders);
+});
