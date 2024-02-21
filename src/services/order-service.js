@@ -19,8 +19,6 @@ exports.createOrderItems = async (orderId, cartId) => {
     where: { cartId: parseInt(cartId) },
   });
 
-
-
   const orderItems = cartItems.map((cartItem) => {
     return {
       orderId: parseInt(orderId),
@@ -30,7 +28,6 @@ exports.createOrderItems = async (orderId, cartId) => {
     };
   });
   // return orderItems;
-
 
   const newOrderItems = await prisma.orderItem.createMany({
     data: orderItems,
@@ -46,4 +43,16 @@ exports.getOrders = async (userId) => {
     },
   });
   return orders;
+};
+
+exports.updateOrderStatus = async (orderId, data) => {
+  return await prisma.order.update({
+    where: {
+      id: parseInt(orderId),
+    },
+    data: {
+      status: data.status,
+      paymentStatus: data.paymentStatus,
+    },
+  });
 };
