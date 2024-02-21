@@ -27,23 +27,23 @@ const product = {
 };
 
 const createProduct = async (product) => {
-    return await prisma.product.create({
-      data: product,
-    });
-  };
+  return await prisma.product.create({
+    data: product,
+  });
+};
 
 const createProductCategory = async (category) => {
-    return await prisma.productCategory.create({
-        data: category
-    })}; 
+  return await prisma.productCategory.create({
+    data: category,
+  });
+};
 
-  const newCategory = {
-    name: 'Flatbox Controllers',
-    desc: 'Hitbox Controllers for the Flatbox series of controllers.'
+const newCategory = {
+  name: "Flatbox Controllers",
+  desc: "Hitbox Controllers for the Flatbox series of controllers.",
 };
 
 // createProductCategory(newCategory)
-
 
 // createProduct(product[1]).then((product) => {
 //     console.log(product);
@@ -59,8 +59,6 @@ exports.createProduct = async (product) => {
     data: product,
   });
 };
-
-
 
 exports.getAllProducts = async () => {
   return await prisma.product.findMany();
@@ -83,7 +81,8 @@ exports.updateStock = async (productId, newStock) => {
       stock: parseInt(newStock),
     },
   });
-}
+};
+
 
 //shopping cart
 exports.userHasCart = async (userId) => {
@@ -151,7 +150,7 @@ const findCartItem = async (cartItemId) => {
 exports.updateCartItem = async (cartItemId, newQuantity, newAttribute) => {
   const updatedItem = await prisma.shoppingCartItem.update({
     where: {
-      id: parseInt(cartItemId)
+      id: parseInt(cartItemId),
     },
     data: {
       quantity: newQuantity !== undefined ? newQuantity : undefined,
@@ -186,8 +185,7 @@ exports.deleteCart = async (cartId) => {
       cartId: parseInt(cartId),
     },
   });
-}
-
+};
 
 //test
 

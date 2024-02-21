@@ -15,9 +15,39 @@ exports.createOrder = async (userId, shippingAddressId) => {
 };
 
 exports.createOrderItems = async (orderId, cartId) => {
+
+  ///FIND STOCK
+  const product = await prisma.product.findMany()
+  const stocks = product.map((product) => {
+    return {
+      productId: product.id,
+      stock: product.stock,
+    };
+  });
+
+ 
+  ///FIND CART ITEMS
   const cartItems = await prisma.shoppingCartItem.findMany({
     where: { cartId: parseInt(cartId) },
   });
+
+  ///CHECK IF STOCK IS ENOUGH
+  const cartItemsQuantity = cartItems.map((cartItem) => {
+    return {
+      productId: cartItem.productItemId,
+      quantity: cartItem.quantity,
+    };
+  });
+  cartItemsQuantity.forEach((cartItem) => {
+    const stock = stocks.find((stock) => stock.productId === cartItem.productId);
+    if (stock.stock < cartItem.quantity) {
+      throw new Error("Not enough stock");
+    }
+  });
+
+  ///CHECKED STOCK!!!
+  ///UPDATE STOCK 
+  
 
   const orderItems = cartItems.map((cartItem) => {
     return {
@@ -27,7 +57,7 @@ exports.createOrderItems = async (orderId, cartId) => {
       attribute: cartItem.attribute,
     };
   });
-  // return orderItems;
+ 
 
   const newOrderItems = await prisma.orderItem.createMany({
     data: orderItems,
@@ -46,6 +76,7 @@ exports.getOrders = async (userId) => {
 };
 
 exports.updateOrderStatus = async (orderId, data) => {
+
   return await prisma.order.update({
     where: {
       id: parseInt(orderId),

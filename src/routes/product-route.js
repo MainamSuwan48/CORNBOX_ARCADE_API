@@ -15,4 +15,5 @@ router.get("/:id", productController.getProductById);
 router.put("/:productId", productController.updateStock);
 
 
+
 module.exports = router;
