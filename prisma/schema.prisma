@@ -165,10 +165,10 @@ model showCaseImage {
 
 model receipt {
   id        Int      @id @default(autoincrement()) @map("id")
-  orderId   Int      @map("order_id")
+  orderId   Int?      @map("order_id")
   src       String?
   createdAt DateTime @default(now()) @map("created_at")
-  order     order    @relation(fields: [orderId], references: [id])
+  order     order?    @relation(fields: [orderId], references: [id])
 
   @@map("receipts")
 }
