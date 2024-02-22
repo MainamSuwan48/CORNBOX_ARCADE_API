@@ -1,6 +1,6 @@
 const prisma = require("../models/prisma");
 
-exports.createOrder = async (userId, shippingAddressId) => {
+exports.createOrder = async (userId, shippingAddressId,shoppingCartId) => {
   console.log(shippingAddressId, "*********** shippingAddressId");
 
   const newOrder = await prisma.order.create({
@@ -9,6 +9,7 @@ exports.createOrder = async (userId, shippingAddressId) => {
       shippingAddressId: shippingAddressId,
       status: "DEPOSITED",
       paymentStatus: "NOT_PAID",
+      shoppingCartId :shoppingCartId
     },
   });
   return newOrder;

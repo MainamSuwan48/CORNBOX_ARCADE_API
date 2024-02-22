@@ -4,10 +4,10 @@ const catchError = require("../utilities/catch-error");
 
 exports.createOrder = catchError(async (req, res) => {
   const { userId } = req.params;
-  const { shippingAddressId } = req.body;
+  const { shippingAddressId,shoppingCartId } = req.body;
     console.log(shippingAddressId, "*********** shippingAddressId from order-controller")
   console.log(req.params, "***********")
-  const order = await orderService.createOrder(userId, shippingAddressId);
+  const order = await orderService.createOrder(userId,shippingAddressId,shoppingCartId );
   res.status(201).json(order);
 });
 

@@ -65,15 +65,16 @@ model shoppingCartItem {
 
 model order {
   id                Int           @id @default(autoincrement())
-  userId            Int           @map("user_id")
+  userId            Int?          @map("user_id")
   shippingAddressId Int?          @map("shipping_address_id")
   userAddress       userAddress?  @relation(fields: [shippingAddressId], references: [id])
   paymentStatus     PaymentStatus @map("payment_status")
   status            OrderStatus
   createdAt         DateTime      @default(now()) @map("created_at")
   updatedAt         DateTime      @default(now()) @map("updated_at")
-  user              user          @relation(fields: [userId], references: [id])
+  user              user?          @relation(fields: [userId], references: [id])
   orderItem         orderItem[]
+  receipt           receipt[]
   shoppingCart      shoppingCart? @relation(fields: [shoppingCartId], references: [id])
   shoppingCartId    Int?
 
@@ -161,3 +162,14 @@ model showCaseImage {
   createdAt DateTime @default(now()) @map("created_at")
   productId Int      @map("product_id")
 }
+
+model receipt {
+  id        Int      @id @default(autoincrement()) @map("id")
+  orderId   Int      @map("order_id")
+  src       String?
+  createdAt DateTime @default(now()) @map("created_at")
+  order     order    @relation(fields: [orderId], references: [id])
+
+  @@map("receipts")
+}
+
