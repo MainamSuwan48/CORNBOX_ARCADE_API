@@ -14,11 +14,7 @@ router.patch(
   validateUpdateUser,
   userController.updateUserById
 );
-router.get(
-  "/:userId/address",
-  authenticate,
-  userController.getAddressByUserId
-);
+router.get("/:userId/address", authenticate, userController.getAddressByUserId);
 
 router.post(
   "/:userId/address",
@@ -36,5 +32,7 @@ router.delete(
   authenticate,
   userController.deleteAddressById
 );
+
+router.get("/addressAll", userController.getAllAddresses);
 
 module.exports = router;

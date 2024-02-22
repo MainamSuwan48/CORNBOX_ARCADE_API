@@ -22,6 +22,11 @@ exports.getAddressByUserId = catchError(async (req, res) => {
   res.status(200).json(addresses);
 });
 
+exports.getAllAddresses = catchError(async (req, res) => {
+  const addresses = await userService.findAllAddresses();
+  res.status(200).json(addresses);
+});
+
 exports.createAddressByUserId = catchError(async (req, res) => {
   const userId = req.params.userId;
   const user = await userService.findUserById(userId);

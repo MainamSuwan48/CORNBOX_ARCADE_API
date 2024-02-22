@@ -77,6 +77,10 @@ exports.findAddressByUserId = async (userId) => {
   });
 };
 
+exports.findAllAddresses = async () => {
+  return await prisma.userAddress.findMany();
+};
+
 exports.findAddressById = async (addressId) => {
   addressId = parseInt(addressId);
   return await prisma.userAddress.findUnique({
@@ -95,4 +99,3 @@ exports.deleteAddressById = async (addressId) => {
     },
   });
 };
-

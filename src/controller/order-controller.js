@@ -4,24 +4,36 @@ const catchError = require("../utilities/catch-error");
 
 exports.createOrder = catchError(async (req, res) => {
   const { userId } = req.params;
-  const { shippingAddressId,shoppingCartId } = req.body;
-    console.log(shippingAddressId, "*********** shippingAddressId from order-controller")
-  console.log(req.params, "***********")
-  const order = await orderService.createOrder(userId,shippingAddressId,shoppingCartId );
+  const { shippingAddressId, shoppingCartId } = req.body;
+  console.log(
+    shippingAddressId,
+    "*********** shippingAddressId from order-controller"
+  );
+  console.log(req.params, "***********");
+  const order = await orderService.createOrder(
+    userId,
+    shippingAddressId,
+    shoppingCartId
+  );
   res.status(201).json(order);
 });
 
 exports.createOrderItems = catchError(async (req, res) => {
-  console.log(req.params, "*********** req.params from order-controller")
+  console.log(req.params, "*********** req.params from order-controller");
   const { orderId } = req.params;
   const { cartId } = req.body;
   const orderItems = await orderService.createOrderItems(orderId, cartId);
   res.status(201).json(orderItems);
-}); 
+});
 
 exports.getOrders = catchError(async (req, res) => {
   const { userId } = req.params;
   const orders = await orderService.getOrders(userId);
+  res.status(200).json(orders);
+});
+
+exports.getAllOrders = catchError(async (req, res) => {
+  const orders = await orderService.getAllOrders();
   res.status(200).json(orders);
 });
 

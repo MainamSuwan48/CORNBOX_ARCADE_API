@@ -1,6 +1,6 @@
 const prisma = require("../models/prisma");
 
-exports.createOrder = async (userId, shippingAddressId,shoppingCartId) => {
+exports.createOrder = async (userId, shippingAddressId, shoppingCartId) => {
   console.log(shippingAddressId, "*********** shippingAddressId");
 
   const newOrder = await prisma.order.create({
@@ -9,16 +9,15 @@ exports.createOrder = async (userId, shippingAddressId,shoppingCartId) => {
       shippingAddressId: shippingAddressId,
       status: "DEPOSITED",
       paymentStatus: "NOT_PAID",
-      shoppingCartId :shoppingCartId
+      shoppingCartId: shoppingCartId,
     },
   });
   return newOrder;
 };
 
 exports.createOrderItems = async (orderId, cartId) => {
-
   ///FIND STOCK
-  const product = await prisma.product.findMany()
+  const product = await prisma.product.findMany();
   const stocks = product.map((product) => {
     return {
       productId: product.id,
@@ -26,7 +25,6 @@ exports.createOrderItems = async (orderId, cartId) => {
     };
   });
 
- 
   ///FIND CART ITEMS
   const cartItems = await prisma.shoppingCartItem.findMany({
     where: { cartId: parseInt(cartId) },
@@ -40,15 +38,16 @@ exports.createOrderItems = async (orderId, cartId) => {
     };
   });
   cartItemsQuantity.forEach((cartItem) => {
-    const stock = stocks.find((stock) => stock.productId === cartItem.productId);
+    const stock = stocks.find(
+      (stock) => stock.productId === cartItem.productId
+    );
     if (stock.stock < cartItem.quantity) {
       throw new Error("Not enough stock");
     }
   });
 
   ///CHECKED STOCK!!!
-  ///UPDATE STOCK 
-  
+  ///UPDATE STOCK
 
   const orderItems = cartItems.map((cartItem) => {
     return {
@@ -58,7 +57,6 @@ exports.createOrderItems = async (orderId, cartId) => {
       attribute: cartItem.attribute,
     };
   });
- 
 
   const newOrderItems = await prisma.orderItem.createMany({
     data: orderItems,
@@ -76,8 +74,16 @@ exports.getOrders = async (userId) => {
   return orders;
 };
 
-exports.updateOrderStatus = async (orderId, data) => {
+exports.getAllOrders = async () => {
+  const orders = await prisma.order.findMany({
+    include: {
+      orderItem: true,
+    },
+  });
+  return orders;
+};
 
+exports.updateOrderStatus = async (orderId, data) => {
   return await prisma.order.update({
     where: {
       id: parseInt(orderId),
