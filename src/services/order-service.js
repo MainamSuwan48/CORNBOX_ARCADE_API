@@ -103,3 +103,7 @@ exports.uploadReceipt = async (orderId, receiptSrc) => {
     },
   });
 };
+
+exports.getAllReceipts = async () => {
+  return await prisma.receipt.findMany();
+};

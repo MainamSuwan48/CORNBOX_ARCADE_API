@@ -1,6 +1,7 @@
 const createError = require("../utilities/create-error");
 const orderService = require("../services/order-service");
 const catchError = require("../utilities/catch-error");
+const uploadService = require("../services/upload-service");
 
 exports.createOrder = catchError(async (req, res) => {
   const { userId } = req.params;
@@ -39,7 +40,22 @@ exports.getAllOrders = catchError(async (req, res) => {
 
 exports.updateOrderStatus = catchError(async (req, res) => {
   const { orderId } = req.params;
-  const data = req.body;
   const order = await orderService.updateOrderStatus(orderId, data);
   res.status(200).json(order);
+});
+
+exports.uploadReceipt = catchError(async (req, res) => {
+  const { orderId } = req.params;
+  const receiptPath = req.file.path;
+  const secure_url = await uploadService.upload(receiptPath);
+  if (!secure_url) {
+    throw createError(500, "Receipt upload failed");
+  }
+  const receipt = await orderService.uploadReceipt(orderId, secure_url);
+  res.status(200).json({ receipt, secure_url });
+});
+
+exports.getAllReceipts = catchError(async (req, res) => {
+  const receipts = await orderService.getAllReceipts();
+  res.status(200).json(receipts);
 });
