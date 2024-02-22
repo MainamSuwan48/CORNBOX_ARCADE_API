@@ -1,6 +1,7 @@
 const createError = require("../utilities/create-error");
 const productService = require("../services/product-sevice");
 const catchError = require("../utilities/catch-error");
+const uploadService = require("../services/upload-service");
 
 exports.getAllProducts = catchError(async (req, res) => {
   const products = await productService.getAllProducts();
@@ -19,6 +20,7 @@ exports.getProductById = catchError(async (req, res) => {
   }
   res.status(200).json(product);
 });
+
 exports.updateStock = catchError(async (req, res) => {
   const { productId } = req.params;
   const { newStock } = req.body;
@@ -26,6 +28,21 @@ exports.updateStock = catchError(async (req, res) => {
   res.status(200).json(updatedStock);
 });
 
+exports.uploadProductImage = catchError(async (req, res) => {
+  const { productId } = req.params;
+  const imageUrl = req.file.path;
+  const secure_url = await uploadService.upload(imageUrl);
+  if (!secure_url) {
+    createError("Image upload failed", 500);
+  }
+  const image = await productService.uploadProductImage(productId, secure_url);
+  res.status(200).json({ image, secure_url });
+});
+
+exports.getAllProductImages = catchError(async (req, res) => {
+  const images = await productService.getAllProductImages();
+  res.status(200).json(images);
+});
 
 //shopping cart
 

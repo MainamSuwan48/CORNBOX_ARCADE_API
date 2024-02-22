@@ -40,6 +40,7 @@ exports.getAllOrders = catchError(async (req, res) => {
 
 exports.updateOrderStatus = catchError(async (req, res) => {
   const { orderId } = req.params;
+  const data = req.body;
   const order = await orderService.updateOrderStatus(orderId, data);
   res.status(200).json(order);
 });

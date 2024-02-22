@@ -83,6 +83,18 @@ exports.updateStock = async (productId, newStock) => {
   });
 };
 
+exports.uploadProductImage = async (productId, imageUrl) => {
+  return await prisma.image.create({
+    data: {
+      productId: parseInt(productId),
+      src: imageUrl,
+    },
+  });
+};
+
+exports.getAllProductImages = async () => {
+  return await prisma.image.findMany();
+};
 
 //shopping cart
 exports.userHasCart = async (userId) => {

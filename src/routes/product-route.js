@@ -1,6 +1,7 @@
 const express = require("express");
 
 const productController = require("../controller/product-controller");
+const upload = require("../middlewares/upload");
 
 router = express.Router();
 router.post("/cart/create", productController.createCartForUser);
@@ -13,7 +14,11 @@ router.delete("/cart/:cartId", productController.deleteCart);
 router.get("/", productController.getAllProducts);
 router.get("/:id", productController.getProductById);
 router.put("/:productId", productController.updateStock);
-
-
+router.post(
+  "/upload/:productId",
+  upload.single("image"),
+  productController.uploadProductImage
+);
+router.get("/image/get", productController.getAllProductImages);
 
 module.exports = router;
