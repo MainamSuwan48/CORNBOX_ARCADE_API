@@ -94,3 +94,12 @@ exports.updateOrderStatus = async (orderId, data) => {
     },
   });
 };
+
+exports.uploadReceipt = async (orderId, receiptSrc) => {
+  return await prisma.receipt.create({
+    data: {
+      src: receiptSrc,
+      orderId: parseInt(orderId),
+    },
+  });
+};
